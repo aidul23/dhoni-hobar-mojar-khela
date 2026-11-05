@@ -1,0 +1,19 @@
+import { useT } from '../../store/gameStore';
+import type { GameState } from '../../types/game';
+import { Button } from '../Modal/Button';
+import { Modal } from '../Modal/Modal';
+import { StatsTable } from './StatsTable';
+
+export function StatsModal({ game, onClose }: { game: GameState; onClose: () => void }) {
+  const t = useT();
+  return (
+    <Modal
+      title={`📊 ${t('stats')}`}
+      onClose={onClose}
+      wide
+      footer={<Button variant="ghost" onClick={onClose}>{t('close')}</Button>}
+    >
+      <StatsTable game={game} />
+    </Modal>
+  );
+}

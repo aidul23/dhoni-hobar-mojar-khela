@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Hind Siliguri", "Noto Sans Bengali", "Kohinoor Bangla", system-ui, sans-serif;
+
+  --animate-pop: pop 0.25s ease-out;
+  --animate-hop: hop 0.18s ease-out;
+  --animate-dice: dice 0.3s ease-in-out infinite;
+  --animate-flip: flip 0.45s ease-out;
+  --animate-float: float 1.6s ease-out forwards;
+  --animate-slide-down: slide-down 0.3s ease-out;
+  --animate-celebrate: celebrate 1s ease-in-out infinite;
+  --animate-shake: shake 0.6s ease-in-out;
+  --animate-glow: glow 1.2s ease-out;
+  --animate-confetti: confetti 3.5s linear infinite;
+
+  @keyframes pop {
+    from { transform: scale(0.85); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  @keyframes hop {
+    0% { transform: translateY(0) scale(0.9); }
+    50% { transform: translateY(-25%) scale(1.05); }
+    100% { transform: translateY(0) scale(1); }
+  }
+  @keyframes dice {
+    0% { transform: rotate(0deg) translateY(0); }
+    25% { transform: rotate(-15deg) translateY(-6%); }
+    75% { transform: rotate(15deg) translateY(4%); }
+    100% { transform: rotate(0deg) translateY(0); }
+  }
+  @keyframes flip {
+    from { transform: perspective(600px) rotateY(90deg); opacity: 0; }
+    to { transform: perspective(600px) rotateY(0); opacity: 1; }
+  }
+  @keyframes float {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-24px); opacity: 0; }
+  }
+  @keyframes slide-down {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px) rotate(-1deg); }
+    40%, 80% { transform: translateX(6px) rotate(1deg); }
+  }
+  @keyframes glow {
+    0% { box-shadow: inset 0 0 0 0 rgba(250, 204, 21, 0.9); }
+    40% { box-shadow: inset 0 0 0 4px rgba(250, 204, 21, 0.9); }
+    100% { box-shadow: inset 0 0 0 0 rgba(250, 204, 21, 0); }
+  }
+  @keyframes confetti {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(105vh) rotate(720deg); opacity: 0.8; }
+  }
+  @keyframes celebrate {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.15) rotate(-6deg); }
+  }
+}
+
+body {
+  background: #f3efe2;
+  color: #1c1917;
+  font-family: var(--font-sans);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
