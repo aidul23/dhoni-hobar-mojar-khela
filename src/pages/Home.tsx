@@ -3,9 +3,33 @@ import { Button } from '../components/Modal/Button';
 import { Choice, DEFAULT_RULES, PlayerFields, RulesEditor, Section } from '../components/Setup/SetupParts';
 import { PLAYER_COLORS, TOKENS } from '../data/tokens';
 import { buildSettings, MAX_PLAYERS, MIN_PLAYERS } from '../engine/setup';
-import { useGameStore, useT } from '../store/gameStore';
+import { RickshawSignboard } from '../components/Home/RickshawSignboard';
+import { useGameStore, useT, type Look } from '../store/gameStore';
 import { useOnlineStore } from '../store/onlineStore';
 import type { PlayerSetup } from '../types/game';
+
+/** Switch between the rickshaw-art and classic home page; remembered in this browser. */
+function LookToggle() {
+  const t = useT();
+  const look = useGameStore((s) => s.look);
+  const setLook = useGameStore((s) => s.setLook);
+  const option = (value: Look, label: string) => (
+    <button
+      type="button"
+      onClick={() => setLook(value)}
+      aria-pressed={look === value}
+      className={`rounded-full px-3 py-1 text-sm font-semibold transition ${look === value ? 'bg-[#be123c] text-white shadow' : 'text-stone-600 hover:bg-white/70'}`}
+    >
+      {label}
+    </button>
+  );
+  return (
+    <div className="inline-flex gap-1 rounded-full bg-white/80 p-1 ring-1 ring-stone-300">
+      {option('rickshaw', `🎨 ${t('lookRickshaw')}`)}
+      {option('classic', t('lookClassic'))}
+    </div>
+  );
+}
 
 export function Home() {
   const t = useT();
@@ -13,6 +37,7 @@ export function Home() {
   const continueGame = useGameStore((s) => s.continueGame);
   const openOnline = useOnlineStore((s) => s.open);
   const hasSave = useGameStore((s) => s.hasSavedGame)();
+  const look = useGameStore((s) => s.look);
 
   const [count, setCount] = useState(2);
   const [players, setPlayers] = useState<PlayerSetup[]>(() =>
@@ -38,11 +63,19 @@ export function Home() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-4 p-4 pb-12">
+      {look === 'rickshaw' && <div className="rickshaw-bg fixed inset-0 -z-10" aria-hidden />}
       <header className="py-6 text-center">
-        <div className="text-5xl">🏘️💰🎲</div>
-        <h1 className="mt-3 text-4xl font-bold text-emerald-800 sm:text-5xl">{t('title')}</h1>
-        <p className="mt-2 text-stone-600">{t('subtitle')}</p>
-        <div className="mt-5 flex flex-wrap justify-center gap-3">
+        <LookToggle />
+        {look === 'rickshaw' ? (
+          <div className="mt-4"><RickshawSignboard /></div>
+        ) : (
+          <>
+            <div className="text-5xl">🏘️💰🎲</div>
+            <h1 className="mt-3 text-4xl font-bold text-emerald-800 sm:text-5xl">{t('title')}</h1>
+            <p className="mt-2 text-stone-600">{t('subtitle')}</p>
+          </>
+        )}
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
           {hasSave && (
             <button
               type="button"
