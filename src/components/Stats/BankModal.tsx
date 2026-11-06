@@ -5,7 +5,7 @@ import { hotelsInUse, hotelsLeft, housesInUse, housesLeft, unsoldProperties } fr
 import { getPrice, getPropertyDef } from '../../engine/property';
 import { useGameStore, useT } from '../../store/gameStore';
 import type { GameState } from '../../types/game';
-import { formatMoney } from '../../utils/currency';
+import { formatMoney, formatNumber } from '../../utils/currency';
 import { Button } from '../Modal/Button';
 import { Modal } from '../Modal/Modal';
 
@@ -18,14 +18,14 @@ function SupplyTile({ icon, label, left, limit, used }: {
     <div className="rounded-lg bg-stone-50 p-3">
       <div className="text-sm text-stone-500"><IconText icon={icon}>{label}</IconText></div>
       <div className="text-2xl font-bold tabular-nums">
-        {left === null ? t('unlimited') : <>{left}<span className="text-base font-normal text-stone-400"> / {limit}</span></>}
+        {left === null ? t('unlimited') : <>{formatNumber(left)}<span className="text-base font-normal text-stone-400"> / {formatNumber(limit ?? 0)}</span></>}
       </div>
       {limit && (
         <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-stone-200">
           <div className={`h-full ${pct < 25 ? 'bg-rose-500' : 'bg-emerald-600'}`} style={{ width: `${pct}%` }} />
         </div>
       )}
-      <div className="mt-1 text-xs text-stone-400"><IconText icon={Construction}>{used}</IconText></div>
+      <div className="mt-1 text-xs text-stone-400"><IconText icon={Construction}>{formatNumber(used)}</IconText></div>
     </div>
   );
 }

@@ -9,7 +9,7 @@ import type { RoomSnapshot } from '../net/protocol';
 import { useT } from '../store/gameStore';
 import { inviteLink, useOnlineStore } from '../store/onlineStore';
 import type { PlayerSetup } from '../types/game';
-import { formatMoney } from '../utils/currency';
+import { formatMoney, formatNumber } from '../utils/currency';
 
 const NAME_KEY = 'dhmk-online-player';
 const MODE_KEY = { classic: 'modeClassic', fast: 'modeFast', custom: 'modeCustom' } as const;
@@ -56,7 +56,7 @@ function ErrorBanner() {
 function JoinOrCreate() {
   const t = useT();
   const { inviteCode, createRoom, joinRoom, status } = useOnlineStore();
-  const [player, setPlayer] = useState(() => loadPlayer(t('player') + ' 1'));
+  const [player, setPlayer] = useState(() => loadPlayer(`${t('player')} ${formatNumber(1)}`));
   const [code, setCode] = useState(inviteCode);
   const [rules, setRules] = useState(DEFAULT_RULES);
   const connected = status === 'open';

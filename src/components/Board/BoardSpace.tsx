@@ -3,7 +3,7 @@ import { Hotel, House } from 'lucide-react';
 import { SPACE_ICONS } from './spaceIcons';
 import { getPrice } from '../../engine/property';
 import type { GameState, Lang, Player, SpaceDef } from '../../types/game';
-import { formatMoney } from '../../utils/currency';
+import { formatMoney, formatNumber } from '../../utils/currency';
 import { gridCell, OWNER_POSITION, STRIP_POSITION } from './boardLayout';
 
 /**
@@ -17,10 +17,10 @@ function Buildings({ houses, hotel, vertical }: { houses: number; hotel: boolean
     <span
       key={hotel ? 'hotel' : houses}
       className={`animate-pop flex items-center justify-center rounded-[0.4cqw] bg-white/95 px-[0.25cqw] py-[0.15cqw] font-bold leading-none shadow ${vertical ? 'flex-col' : 'gap-[0.15cqw]'} ${hotel ? 'text-rose-700' : 'text-emerald-800'}`}
-      title={hotel ? 'Hotel' : `${houses}`}
+      title={hotel ? 'Hotel' : formatNumber(houses)}
     >
       <Icon className="h-[1.3cqw] w-[1.3cqw]" strokeWidth={2.6} aria-hidden />
-      {!hotel && <span className="text-[1.05cqw]">{houses}</span>}
+      {!hotel && <span className="text-[1.05cqw]">{formatNumber(houses)}</span>}
     </span>
   );
 }

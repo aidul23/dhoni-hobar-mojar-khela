@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { IconText } from '../IconText';
 import { useT } from '../../store/gameStore';
 import type { GameState } from '../../types/game';
-import { formatMoney } from '../../utils/currency';
+import { formatMoney, formatNumber } from '../../utils/currency';
 import { Button } from '../Modal/Button';
 import { Modal } from '../Modal/Modal';
 
@@ -17,11 +17,11 @@ export function RulesModal({ game, onClose }: { game: GameState; onClose: () => 
     [t('startingCash'), formatMoney(s.startingCash)],
     [t('startBonus'), formatMoney(s.startBonus)],
     [t('jailFine'), formatMoney(s.jailFine)],
-    [t('priceLevel'), `${Math.round(s.priceMultiplier * 100)}%`],
+    [t('priceLevel'), `${formatNumber(s.priceMultiplier * 100)}%`],
     [t('ownership'), s.victoryPercent ? t('percentOfProps', { n: s.victoryPercent }) : t('off')],
     [t('buildingSupply'), (
       <span className="inline-flex items-center gap-2">
-        <IconText icon={House}>{s.houseLimit ?? t('unlimited')}</IconText>·<IconText icon={Hotel}>{s.hotelLimit ?? t('unlimited')}</IconText>
+        <IconText icon={House}>{s.houseLimit ? formatNumber(s.houseLimit) : t('unlimited')}</IconText>·<IconText icon={Hotel}>{s.hotelLimit ? formatNumber(s.hotelLimit) : t('unlimited')}</IconText>
       </span>
     )],
     [t('turnLimit').replace(/\s*\(.*\)/, ''), s.turnLimit ? t('roundsThenRichest', { n: s.turnLimit }) : t('off')],

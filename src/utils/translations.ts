@@ -1,7 +1,7 @@
 import { BOARD } from '../data/board';
 import { ALL_CARDS } from '../data/cards';
 import type { Lang, LogEntry, LogParams } from '../types/game';
-import { formatMoney } from './currency';
+import { formatMoney, formatNumber, localizeDigits } from './currency';
 
 type Dict = Record<string, { bn: string; en: string }>;
 
@@ -294,13 +294,30 @@ const LOG: Dict = {
   winnerByOwnership: { bn: '{player} {percent}% সম্পত্তির মালিক হয়ে জিতেছেন!', en: '{player} wins by owning {percent}% of all properties!' },
 };
 
+/** Bengali digits in a template's own text, leaving {placeholders} such as {d1} intact. */
+function localizeTemplate(template: string, lang: Lang): string {
+  return template.replace(/(\{\w+\})|[0-9]+/g, (match, placeholder: string | undefined) =>
+    placeholder ?? localizeDigits(match, lang),
+  );
+}
+
 function fill(template: string, params: Record<string, string | number>): string {
   return template.replace(/\{(\w+)\}/g, (_, k: string) => String(params[k] ?? `{${k}}`));
 }
 
+/**
+ * Numbers in templates and numeric params follow the language (১২ in Bangla).
+ * Text params such as player names are left exactly as typed.
+ */
+function localizeParams(lang: Lang, params: Record<string, string | number>): Record<string, string | number> {
+  const out: Record<string, string | number> = {};
+  for (const [k, v] of Object.entries(params)) out[k] = typeof v === 'number' ? formatNumber(v, lang) : v;
+  return out;
+}
+
 export function t(lang: Lang, key: string, params: Record<string, string | number> = {}): string {
   const entry = UI[key] ?? LOG[key];
-  return entry ? fill(entry[lang], params) : key;
+  return entry ? fill(localizeTemplate(entry[lang], lang), localizeParams(lang, params)) : key;
 }
 
 /** Resolves special log params (space index, card id, money) into display text. */
@@ -312,15 +329,17 @@ function resolveParams(lang: Lang, params: LogParams): Record<string, string | n
   }
   if (typeof params.card === 'string') {
     const card = ALL_CARDS[params.card];
-    out.card = card ? card[lang] : params.card;
+    out.card = card ? localizeDigits(card[lang], lang) : params.card;
   }
   if (typeof params.deck === 'string') out.deck = t(lang, params.deck);
-  if (typeof params.amount === 'number') out.amount = formatMoney(params.amount);
+  if (typeof params.amount === 'number') out.amount = formatMoney(params.amount, lang);
   if (params.creditor === '') out.creditor = t(lang, 'bankShort');
   return out;
 }
 
 export function formatLog(lang: Lang, entry: LogEntry): string {
   const template = LOG[entry.key];
-  return template ? fill(template[lang], resolveParams(lang, entry.params)) : entry.key;
+  return template
+    ? fill(localizeTemplate(template[lang], lang), localizeParams(lang, resolveParams(lang, entry.params)))
+    : entry.key;
 }

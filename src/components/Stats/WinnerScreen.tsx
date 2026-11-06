@@ -3,7 +3,7 @@ import { IconText } from '../IconText';
 import { finalRanking, netWorth } from '../../engine/ranking';
 import { useT } from '../../store/gameStore';
 import type { GameState } from '../../types/game';
-import { formatMoney } from '../../utils/currency';
+import { formatMoney, formatNumber } from '../../utils/currency';
 import { Confetti } from '../Effects/Confetti';
 import { Button } from '../Modal/Button';
 import { StatsTable } from './StatsTable';
@@ -47,7 +47,7 @@ export function WinnerScreen({ game, onPlayAgain, onNewGame, newGameLabel, note 
               >
                 <span className="relative flex h-7 w-7 items-center justify-center" aria-label={`#${i + 1}`}>
                   <Medal className="h-7 w-7" style={{ color: MEDAL_COLORS[i] }} strokeWidth={2} aria-hidden />
-                  <span className="absolute bottom-0 right-0 rounded-full bg-white px-1 text-[10px] font-bold leading-tight text-stone-700 shadow">{i + 1}</span>
+                  <span className="absolute bottom-0 right-0 rounded-full bg-white px-1 text-[10px] font-bold leading-tight text-stone-700 shadow">{formatNumber(i + 1)}</span>
                 </span>
                 <span className="text-lg">{p.token}</span>
                 <span className="flex-1 font-semibold" style={{ color: p.color }}>{p.name}</span>

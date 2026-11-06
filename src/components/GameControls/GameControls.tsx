@@ -5,7 +5,7 @@ import { buildingLevel, getPropertyDef } from '../../engine/property';
 import { GROUP_COLORS } from '../../data/properties';
 import { useGameStore, useT } from '../../store/gameStore';
 import type { GameState } from '../../types/game';
-import { formatMoney } from '../../utils/currency';
+import { formatMoney, formatNumber } from '../../utils/currency';
 import { Dice } from '../Dice/Dice';
 import { Button } from '../Modal/Button';
 import { useCanAct, useOnlineView } from '../../store/onlineStore';
@@ -14,7 +14,7 @@ import { PrimaryTurnButton } from './PrimaryTurnButton';
 const BuildingBadge = ({ level }: { level: number }) =>
   level === 0 ? null : (
     <span className="ml-1 inline-flex items-center gap-0.5 align-middle font-semibold">
-      {level === 5 ? <Hotel className="h-3.5 w-3.5 text-rose-700" aria-hidden /> : <><House className="h-3.5 w-3.5 text-emerald-700" aria-hidden />{level}</>}
+      {level === 5 ? <Hotel className="h-3.5 w-3.5 text-rose-700" aria-hidden /> : <><House className="h-3.5 w-3.5 text-emerald-700" aria-hidden />{formatNumber(level)}</>}
     </span>
   );
 
@@ -97,7 +97,7 @@ export function GameControls({ game, faces, rolling, busy, onRoll, onSelectPrope
 
       <div className="mt-4">
         <h3 className="mb-1 text-sm font-bold text-emerald-800">
-          {t('properties')} ({player.properties.length})
+          {t('properties')} ({formatNumber(player.properties.length)})
         </h3>
         {player.properties.length === 0 ? (
           <p className="text-sm text-stone-400">{t('noProperties')}</p>

@@ -1,3 +1,4 @@
+import { localizeDigits } from '../../utils/currency';
 import { CircleHelp, Gift } from 'lucide-react';
 import { getCard } from '../../engine/cards';
 import { useGameStore, useT } from '../../store/gameStore';
@@ -28,7 +29,7 @@ export function CardModal({ cardId, drawnBy }: { cardId: string; drawnBy: Player
         <h2 className={`mt-2 text-2xl font-bold ${isChance ? 'text-orange-700' : 'text-sky-700'}`}>
           {t(card.deck)}
         </h2>
-        <p className="my-5 min-h-12 text-lg text-stone-800">{card[lang]}</p>
+        <p className="my-5 min-h-12 text-lg text-stone-800">{localizeDigits(card[lang], lang)}</p>
         {mine
           ? <Button onClick={() => dispatch({ type: 'RESOLVE_CARD' })} className="w-full">{t('ok')}</Button>
           : <WaitingFor player={drawnBy} />}

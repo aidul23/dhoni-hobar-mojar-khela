@@ -1,3 +1,4 @@
+import { formatNumber } from '../utils/currency';
 import { Dices, Globe, Play, Smartphone } from 'lucide-react';
 import { IconText } from '../components/IconText';
 import { useState } from 'react';
@@ -21,7 +22,7 @@ export function Home() {
   const [count, setCount] = useState(2);
   const [players, setPlayers] = useState<PlayerSetup[]>(() =>
     Array.from({ length: MAX_PLAYERS }, (_, i) => ({
-      name: t('player') + ' ' + (i + 1),
+      name: `${t('player')} ${formatNumber(i + 1)}`,
       color: PLAYER_COLORS[i],
       token: TOKENS[i],
     })),
@@ -71,14 +72,14 @@ export function Home() {
       <Section title={t('numPlayers')}>
         <div className="flex gap-2">
           {Array.from({ length: MAX_PLAYERS - MIN_PLAYERS + 1 }, (_, i) => i + MIN_PLAYERS).map((n) => (
-            <Choice key={n} active={count === n} onClick={() => setCount(n)}>{n}</Choice>
+            <Choice key={n} active={count === n} onClick={() => setCount(n)}>{formatNumber(n)}</Choice>
           ))}
         </div>
       </Section>
 
       <div className="grid gap-4 sm:grid-cols-2">
         {active.map((p, i) => (
-          <Section key={i} title={`${t('player')} ${i + 1}`}>
+          <Section key={i} title={`${t('player')} ${formatNumber(i + 1)}`}>
             <PlayerFields player={p} onChange={(patch) => update(i, patch)} />
           </Section>
         ))}

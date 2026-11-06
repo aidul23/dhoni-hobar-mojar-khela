@@ -4,7 +4,7 @@ import { DEFAULT_SETTINGS, LIMITS } from '../../engine/setup';
 import type { RoomRules } from '../../net/protocol';
 import { useT } from '../../store/gameStore';
 import type { GameMode, PlayerSetup } from '../../types/game';
-import { formatMoney } from '../../utils/currency';
+import { formatMoney, formatNumber } from '../../utils/currency';
 
 const CASH_OPTIONS = [10000, 15000, 20000];
 const MODES: GameMode[] = ['classic', 'fast', 'custom'];
@@ -68,7 +68,7 @@ export function NumberField({ label, value, onChange, min, max, step = 1 }: {
         onBlur={commit}
         className="rounded-lg border border-stone-300 px-3 py-2"
       />
-      <span className="text-xs text-stone-400">{min.toLocaleString('en-US')} – {max.toLocaleString('en-US')}</span>
+      <span className="text-xs text-stone-400">{formatNumber(min)} – {formatNumber(max)}</span>
     </label>
   );
 }

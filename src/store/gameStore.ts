@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { gameReducer } from '../engine/game';
 import { createGame, migrateSave } from '../engine/setup';
 import type { GameAction, GameSettings, GameState, Lang, PlayerSetup } from '../types/game';
+import { setNumberLanguage } from '../utils/currency';
 import { t } from '../utils/translations';
 
 const SAVE_KEY = 'dhmk-save';
@@ -64,6 +65,8 @@ interface GameStore {
   onlineDispatch: ((action: GameAction) => void) | null;
 }
 
+setNumberLanguage(readLang());
+
 export const useGameStore = create<GameStore>((set, get) => ({
   lang: readLang(),
   game: null,
@@ -79,6 +82,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setLang: (lang) => {
     try { localStorage.setItem(LANG_KEY, lang); } catch { /* ignore */ }
+    setNumberLanguage(lang);
     document.documentElement.lang = lang;
     set({ lang });
   },

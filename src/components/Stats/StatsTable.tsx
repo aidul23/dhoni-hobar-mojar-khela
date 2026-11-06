@@ -3,7 +3,7 @@ import { netWorth } from '../../engine/ranking';
 import { emptyStats } from '../../engine/stats';
 import { useT } from '../../store/gameStore';
 import type { GameState, Player, PlayerStats } from '../../types/game';
-import { formatMoney } from '../../utils/currency';
+import { formatMoney, formatNumber } from '../../utils/currency';
 
 const ROWS: { key: keyof PlayerStats; money?: boolean }[] = [
   { key: 'rentReceived', money: true },
@@ -27,7 +27,7 @@ export function StatsTable({ game, players }: { game: GameState; players?: Playe
   const stat = (p: Player) => game.stats[p.id] ?? emptyStats();
   const highlight = new Set<keyof PlayerStats>(['rentReceived', 'propertiesBought', 'housesBuilt', 'hotelsBuilt']);
 
-  const cell = (value: number, money?: boolean) => (money ? formatMoney(value) : value);
+  const cell = (value: number, money?: boolean) => (money ? formatMoney(value) : formatNumber(value));
 
   return (
     <div className="overflow-x-auto">

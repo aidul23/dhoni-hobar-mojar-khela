@@ -1,3 +1,4 @@
+import { formatNumber } from '../../utils/currency';
 import { Hotel, House, Landmark } from 'lucide-react';
 import { PeacockFeather } from '../Decor/PeacockFeather';
 import { hotelsLeft, housesLeft } from '../../engine/bank';
@@ -25,6 +26,8 @@ function CenterSignboard({ title }: { title: string }) {
     </div>
   );
 }
+
+const fmtLeft = (n: number | null) => (n === null ? '∞' : formatNumber(n));
 
 export function BoardCenter({ game, lang, faces, rolling }: Props) {
   const player = game.players[game.currentPlayerIndex];
@@ -58,9 +61,9 @@ export function BoardCenter({ game, lang, faces, rolling }: Props) {
         <div className="rounded-full bg-white/80 px-[1.6cqw] py-[0.4cqw] text-[1.5cqw] text-stone-700 shadow-sm" title={t(lang, 'bankLabel')}>
           <span className="flex items-center gap-[0.6cqw]">
             <Landmark className="h-[1.7cqw] w-[1.7cqw] text-blue-900" aria-hidden />
-            <House className="h-[1.6cqw] w-[1.6cqw] text-emerald-700" aria-hidden /> {housesLeft(game) ?? '∞'}
+            <House className="h-[1.6cqw] w-[1.6cqw] text-emerald-700" aria-hidden /> {fmtLeft(housesLeft(game))}
             <span className="text-stone-400">·</span>
-            <Hotel className="h-[1.6cqw] w-[1.6cqw] text-rose-700" aria-hidden /> {hotelsLeft(game) ?? '∞'}
+            <Hotel className="h-[1.6cqw] w-[1.6cqw] text-rose-700" aria-hidden /> {fmtLeft(hotelsLeft(game))}
           </span>
         </div>
       )}
