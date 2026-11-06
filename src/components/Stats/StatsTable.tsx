@@ -1,3 +1,4 @@
+import { Star } from 'lucide-react';
 import { netWorth } from '../../engine/ranking';
 import { emptyStats } from '../../engine/stats';
 import { useT } from '../../store/gameStore';
@@ -56,7 +57,7 @@ export function StatsTable({ game, players }: { game: GameState; players?: Playe
                 <td className="px-2 py-1 text-stone-600">{t(`stat.${key}`)}</td>
                 {cols.map((p, i) => (
                   <td key={p.id} className="px-2 py-1 text-right tabular-nums">
-                    {highlight.has(key) && best > 0 && values[i] === best && <span title={t('statBest')}>⭐ </span>}
+                    {highlight.has(key) && best > 0 && values[i] === best && <Star className="mr-1 inline h-3.5 w-3.5 fill-amber-400 text-amber-500" aria-label={t('statBest')} />}
                     {cell(values[i], money)}
                   </td>
                 ))}

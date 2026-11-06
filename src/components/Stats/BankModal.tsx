@@ -1,3 +1,5 @@
+import { ArrowDownToLine, ArrowUpFromLine, Construction, Hotel, House, Landmark, type LucideIcon } from 'lucide-react';
+import { IconText } from '../IconText';
 import { GROUP_COLORS } from '../../data/properties';
 import { hotelsInUse, hotelsLeft, housesInUse, housesLeft, unsoldProperties } from '../../engine/bank';
 import { getPrice, getPropertyDef } from '../../engine/property';
@@ -8,13 +10,13 @@ import { Button } from '../Modal/Button';
 import { Modal } from '../Modal/Modal';
 
 function SupplyTile({ icon, label, left, limit, used }: {
-  icon: string; label: string; left: number | null; limit: number | null; used: number;
+  icon: LucideIcon; label: string; left: number | null; limit: number | null; used: number;
 }) {
   const t = useT();
   const pct = limit ? Math.round(((left ?? 0) / limit) * 100) : 100;
   return (
     <div className="rounded-lg bg-stone-50 p-3">
-      <div className="text-sm text-stone-500">{icon} {label}</div>
+      <div className="text-sm text-stone-500"><IconText icon={icon}>{label}</IconText></div>
       <div className="text-2xl font-bold tabular-nums">
         {left === null ? t('unlimited') : <>{left}<span className="text-base font-normal text-stone-400"> / {limit}</span></>}
       </div>
@@ -23,7 +25,7 @@ function SupplyTile({ icon, label, left, limit, used }: {
           <div className={`h-full ${pct < 25 ? 'bg-rose-500' : 'bg-emerald-600'}`} style={{ width: `${pct}%` }} />
         </div>
       )}
-      <div className="mt-1 text-xs text-stone-400">🏗️ {used}</div>
+      <div className="mt-1 text-xs text-stone-400"><IconText icon={Construction}>{used}</IconText></div>
     </div>
   );
 }
@@ -39,7 +41,7 @@ export function BankModal({ game, onClose, onSelectProperty }: {
 
   return (
     <Modal
-      title={`🏦 ${t('bankTitle')}`}
+      title={<IconText icon={Landmark}>{t('bankTitle')}</IconText>}
       accent="#1e3a8a"
       onClose={onClose}
       wide
@@ -47,14 +49,14 @@ export function BankModal({ game, onClose, onSelectProperty }: {
     >
       <p className="mb-3 text-sm text-stone-600">{t('bankIntro')}</p>
       <div className="grid grid-cols-2 gap-2">
-        <SupplyTile icon="🏠" label={t('housesLeft')} left={housesLeft(game)} limit={game.settings.houseLimit} used={housesInUse(game)} />
-        <SupplyTile icon="🏨" label={t('hotelsLeft')} left={hotelsLeft(game)} limit={game.settings.hotelLimit} used={hotelsInUse(game)} />
+        <SupplyTile icon={House} label={t('housesLeft')} left={housesLeft(game)} limit={game.settings.houseLimit} used={housesInUse(game)} />
+        <SupplyTile icon={Hotel} label={t('hotelsLeft')} left={hotelsLeft(game)} limit={game.settings.hotelLimit} used={hotelsInUse(game)} />
         <div className="rounded-lg bg-emerald-50 p-3">
-          <div className="text-sm text-stone-500">⬇️ {t('bankReceived')}</div>
+          <div className="text-sm text-stone-500"><IconText icon={ArrowDownToLine}>{t('bankReceived')}</IconText></div>
           <div className="text-xl font-bold tabular-nums text-emerald-800">{formatMoney(game.bank.received)}</div>
         </div>
         <div className="rounded-lg bg-amber-50 p-3">
-          <div className="text-sm text-stone-500">⬆️ {t('bankPaid')}</div>
+          <div className="text-sm text-stone-500"><IconText icon={ArrowUpFromLine}>{t('bankPaid')}</IconText></div>
           <div className="text-xl font-bold tabular-nums text-amber-800">{formatMoney(game.bank.paid)}</div>
         </div>
       </div>

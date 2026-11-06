@@ -1,3 +1,5 @@
+import { Handshake } from 'lucide-react';
+import { IconText } from '../IconText';
 import { getPropertyDef } from '../../engine/property';
 import { getPlayer } from '../../engine/state';
 import { useGameStore, useT } from '../../store/gameStore';
@@ -41,7 +43,7 @@ export function TradeResponseModal({ game }: { game: GameState }) {
 
   return (
     <Modal
-      title={`🤝 ${t('tradeIncoming', { from: from.name, to: to.name })}`}
+      title={<IconText icon={Handshake}>{t('tradeIncoming', { from: from.name, to: to.name })}</IconText>}
       accent={to.color}
       wide
       footer={

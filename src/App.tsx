@@ -1,3 +1,4 @@
+import { Volume2, VolumeX } from 'lucide-react';
 import { useEffect } from 'react';
 import { Game } from './pages/Game';
 import { Home } from './pages/Home';
@@ -34,10 +35,10 @@ export default function App() {
           type="button"
           onClick={toggleMute}
           aria-label="sound"
-          title={muted ? '🔇' : '🔊'}
+          title={muted ? 'Sound off' : 'Sound on'}
           className="mr-1 rounded-full bg-white px-3 py-1 text-sm ring-1 ring-stone-300"
         >
-          {muted ? '🔇' : '🔊'}
+          {muted ? <VolumeX className="h-4 w-4" aria-hidden /> : <Volume2 className="h-4 w-4" aria-hidden />}
         </button>
         {LANGS.map((l) => (
           <button

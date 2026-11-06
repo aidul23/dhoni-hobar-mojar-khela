@@ -240,8 +240,6 @@ const UI: Dict = {
   'error.badToken': { bn: 'আগের আসনটি আর নেই — আবার যোগ দিন।', en: 'Your previous seat is gone — please join again.' },
   'error.lookTaken': { bn: 'এই রং বা গুটি অন্য কেউ নিয়েছে।', en: 'That colour or token is already taken.' },
   'error.tooManyRequests': { bn: 'একটু ধীরে!', en: 'Slow down a little!' },
-  lookRickshaw: { bn: 'রিকশা আর্ট', en: 'Rickshaw art' },
-  lookClassic: { bn: 'ক্লাসিক', en: 'Classic' },
   'group.brown': { bn: 'বাদামি', en: 'Brown' },
   'group.sky': { bn: 'আকাশি', en: 'Sky blue' },
   'group.pink': { bn: 'গোলাপি', en: 'Pink' },

@@ -1,3 +1,5 @@
+import { Lock, MapPin, Ticket, TriangleAlert, WifiOff } from 'lucide-react';
+import { IconText } from '../IconText';
 import { useEffect, useRef, useState } from 'react';
 import { BOARD } from '../../data/board';
 import { useGameStore, useT } from '../../store/gameStore';
@@ -84,15 +86,15 @@ export function PlayerCard({ player, isCurrent, debt = 0, worth, isMe = false, o
       <div className="mt-2 grid grid-cols-2 gap-x-2 text-xs text-stone-600">
         <span>{t('properties')}: <b>{player.properties.length}</b></span>
         <span className="col-span-2 order-last">{t('netWorth')}: <b className="tabular-nums">{formatMoney(worth)}</b></span>
-        <span className="truncate">📍 {lang === 'bn' ? space.nameBn : space.nameEn}</span>
-        {player.getOutOfJailCards > 0 && <span>🎟️ {t('jailCards')}: {player.getOutOfJailCards}</span>}
+        <IconText icon={MapPin} className="min-w-0" iconClassName="h-3 w-3"><span className="truncate">{lang === 'bn' ? space.nameBn : space.nameEn}</span></IconText>
+        {player.getOutOfJailCards > 0 && <IconText icon={Ticket} iconClassName="h-3 w-3">{t('jailCards')}: {player.getOutOfJailCards}</IconText>}
       </div>
       <div className="mt-1 flex flex-wrap gap-1 text-xs">
-        {player.inJail && <span className="rounded bg-stone-800 px-1.5 py-0.5 text-white">🔒 {t('inJail')} ({player.jailTurns}/3)</span>}
-        {debt > 0 && <span className="animate-pulse rounded bg-rose-100 px-1.5 py-0.5 font-semibold text-rose-700">⚠️ {t('debt')}: {formatMoney(debt)}</span>}
+        {player.inJail && <IconText icon={Lock} iconClassName="h-3 w-3" className="rounded bg-stone-800 px-1.5 py-0.5 text-white">{t('inJail')} ({player.jailTurns}/3)</IconText>}
+        {debt > 0 && <IconText icon={TriangleAlert} iconClassName="h-3 w-3" className="animate-pulse rounded bg-rose-100 px-1.5 py-0.5 font-semibold text-rose-700">{t('debt')}: {formatMoney(debt)}</IconText>}
         {player.bankrupt && <span className="rounded bg-rose-700 px-1.5 py-0.5 text-white">{t('bankrupt')}</span>}
         {isMe && <span className="rounded bg-emerald-700 px-1.5 py-0.5 font-semibold text-white">{t('you')}</span>}
-        {offline && <span className="rounded bg-stone-200 px-1.5 py-0.5 text-stone-600">📴 {t('offline')}</span>}
+        {offline && <IconText icon={WifiOff} iconClassName="h-3 w-3" className="rounded bg-stone-200 px-1.5 py-0.5 text-stone-600">{t('offline')}</IconText>}
         {onRemove && (
           <button type="button" onClick={onRemove} className="rounded px-1.5 py-0.5 text-rose-700 ring-1 ring-rose-300 hover:bg-rose-50">
             {t('removePlayer')}

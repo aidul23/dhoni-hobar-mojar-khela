@@ -1,3 +1,4 @@
+import { Info } from 'lucide-react';
 import { buildingSellValue, checkBuildHotel, checkBuildHouse, checkSellBuilding } from '../../engine/building';
 import { canRaiseFunds, canSpendOnAssets } from '../../engine/game';
 import { checkMortgage, checkUnmortgage } from '../../engine/mortgage';
@@ -73,7 +74,7 @@ export function PropertyActions({ id, game, compact = false }: { id: string; gam
         ))}
       </div>
       {!compact && firstBlocked && (
-        <p className="mt-2 text-xs text-stone-500">ℹ️ {t(`reason.${firstBlocked.reason}`)}</p>
+        <p className="mt-2 flex items-start gap-1.5 text-xs text-stone-500"><Info className="mt-px h-3.5 w-3.5 shrink-0" aria-hidden />{t(`reason.${firstBlocked.reason}`)}</p>
       )}
     </div>
   );

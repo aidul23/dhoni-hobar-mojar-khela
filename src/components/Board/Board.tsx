@@ -20,8 +20,10 @@ export function Board({ game, lang, positions, faces, rolling, onSelectProperty 
 
   return (
     <div className="@container mx-auto aspect-square w-full max-w-[min(100%,calc(100vh-5.5rem))]">
+      {/* The striped rickshaw-backboard frame wraps the board. */}
+      <div className="rickshaw-frame h-full w-full rounded-[2.2cqw] p-[1cqw] shadow-[0_0.8cqw_0_#7f1d1d,0_2cqw_3cqw_rgba(0,0,0,0.25)]">
       <div
-        className="grid h-full w-full overflow-hidden rounded-xl border-4 border-emerald-800 bg-emerald-800 shadow-2xl"
+        className="grid h-full w-full overflow-hidden rounded-[1.4cqw] border-[0.5cqw] border-white bg-white shadow-2xl"
         style={{ gridTemplateColumns: TRACK, gridTemplateRows: TRACK }}
       >
         {BOARD.map((space) => (
@@ -36,6 +38,7 @@ export function Board({ game, lang, positions, faces, rolling, onSelectProperty 
           />
         ))}
         <BoardCenter game={game} lang={lang} faces={faces} rolling={rolling} />
+      </div>
       </div>
     </div>
   );

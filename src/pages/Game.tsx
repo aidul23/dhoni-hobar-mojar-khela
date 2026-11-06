@@ -1,3 +1,4 @@
+import { LoaderCircle, TriangleAlert, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Board } from '../components/Board/Board';
 import { CardModal } from '../components/CardModal/CardModal';
@@ -258,12 +259,12 @@ export function Game({ game }: { game: GameState }) {
           onClick={clearOnlineError}
           className="fixed inset-x-0 bottom-20 z-50 mx-auto w-fit max-w-[90vw] rounded-lg bg-rose-600 px-4 py-2 text-sm font-semibold text-white shadow-lg lg:bottom-6"
         >
-          ⚠️ {t(`error.${onlineError}`)} ✕
+          <span className="flex items-center gap-2"><TriangleAlert className="h-4 w-4" aria-hidden />{t(`error.${onlineError}`)}<X className="h-4 w-4" aria-hidden /></span>
         </button>
       )}
       {view.online && connection !== 'open' && (
         <div className="fixed inset-x-0 top-0 z-50 bg-amber-400 py-1.5 text-center text-sm font-semibold text-stone-900 shadow">
-          ⏳ {t('reconnecting')}
+          <span className="flex items-center justify-center gap-2"><LoaderCircle className="h-4 w-4 animate-spin" aria-hidden />{t('reconnecting')}</span>
         </div>
       )}
       {(panel === 'confirmNew' || panel === 'confirmReset') && (

@@ -1,23 +1,25 @@
 import { PROPERTIES, GROUP_COLORS } from '../../data/properties';
-import { SPACE_ICONS } from '../../data/tokens';
+import { Hotel, House } from 'lucide-react';
+import { SPACE_ICONS } from './spaceIcons';
 import { getPrice } from '../../engine/property';
 import type { GameState, Lang, Player, SpaceDef } from '../../types/game';
 import { formatMoney } from '../../utils/currency';
 import { gridCell, OWNER_POSITION, STRIP_POSITION } from './boardLayout';
 
 /**
- * Building badge drawn on the colour strip: 🏠 with a count for houses, 🏨 for a hotel.
+ * Building badge drawn on the colour strip: a house icon with a count, or a hotel icon.
  * On the left/right edges the strip is vertical, so the badge stacks.
  */
 function Buildings({ houses, hotel, vertical }: { houses: number; hotel: boolean; vertical: boolean }) {
   if (!hotel && houses === 0) return null;
+  const Icon = hotel ? Hotel : House;
   return (
     <span
       key={hotel ? 'hotel' : houses}
-      className={`animate-pop flex items-center justify-center rounded-[0.4cqw] bg-white/95 px-[0.2cqw] font-bold leading-none shadow ${vertical ? 'flex-col py-[0.2cqw]' : 'gap-[0.1cqw]'} ${hotel ? 'text-rose-700' : 'text-emerald-800'}`}
-      title={hotel ? '🏨' : `🏠 × ${houses}`}
+      className={`animate-pop flex items-center justify-center rounded-[0.4cqw] bg-white/95 px-[0.25cqw] py-[0.15cqw] font-bold leading-none shadow ${vertical ? 'flex-col' : 'gap-[0.15cqw]'} ${hotel ? 'text-rose-700' : 'text-emerald-800'}`}
+      title={hotel ? 'Hotel' : `${houses}`}
     >
-      <span className="text-[1.25cqw]">{hotel ? '🏨' : '🏠'}</span>
+      <Icon className="h-[1.3cqw] w-[1.3cqw]" strokeWidth={2.6} aria-hidden />
       {!hotel && <span className="text-[1.05cqw]">{houses}</span>}
     </span>
   );
@@ -63,7 +65,14 @@ export function BoardSpace({ space, game, lang, tokens, highlighted, onSelectPro
       )}
 
       <div className={`flex flex-col items-center px-[4%] ${isCorner ? 'gap-[0.3cqw]' : ''}`}>
-        {icon && <span className={isCorner ? 'text-[3.4cqw]' : 'text-[1.9cqw]'}>{icon}</span>}
+        {icon && (
+          <icon.Icon
+            className={isCorner ? 'h-[3.6cqw] w-[3.6cqw]' : 'h-[2.1cqw] w-[2.1cqw]'}
+            style={{ color: icon.color }}
+            strokeWidth={2.2}
+            aria-hidden
+          />
+        )}
         <span className={`font-semibold text-stone-800 ${isCorner ? 'text-[1.5cqw]' : 'text-[1.1cqw]'}`}>{name}</span>
         {def && !owner && (
           <span className="text-[1cqw] text-stone-500">{formatMoney(getPrice(game.settings, def.id))}</span>
@@ -81,7 +90,12 @@ export function BoardSpace({ space, game, lang, tokens, highlighted, onSelectPro
       )}
 
       {tokens.length > 0 && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-[8%] flex flex-wrap items-end justify-center gap-[0.2cqw] px-[4%]">
+        <div
+          className={`pointer-events-none absolute inset-x-0 z-[2] flex flex-wrap items-end justify-center gap-[0.2cqw] px-[4%] ${
+            // Top-row colour strips sit on the bottom edge, so tokens rest just above them.
+            side === 'top' ? 'bottom-[24%]' : 'bottom-[8%]'
+          }`}
+        >
           {tokens.map((p) => (
             <span
               key={`${p.id}-${space.index}`}

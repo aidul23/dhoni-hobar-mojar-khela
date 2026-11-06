@@ -1,3 +1,5 @@
+import { Handshake, Hotel, House, Lock, Star, Ticket } from 'lucide-react';
+import { IconText } from '../IconText';
 import { canProposeTrade } from '../../engine/game';
 import { buildingLevel, getPropertyDef } from '../../engine/property';
 import { GROUP_COLORS } from '../../data/properties';
@@ -10,7 +12,11 @@ import { useCanAct, useOnlineView } from '../../store/onlineStore';
 import { PrimaryTurnButton } from './PrimaryTurnButton';
 
 const BuildingBadge = ({ level }: { level: number }) =>
-  level === 0 ? null : <span className="ml-1">{level === 5 ? '🏨' : `🏠${level}`}</span>;
+  level === 0 ? null : (
+    <span className="ml-1 inline-flex items-center gap-0.5 align-middle font-semibold">
+      {level === 5 ? <Hotel className="h-3.5 w-3.5 text-rose-700" aria-hidden /> : <><House className="h-3.5 w-3.5 text-emerald-700" aria-hidden />{level}</>}
+    </span>
+  );
 
 interface Props {
   game: GameState;
@@ -46,7 +52,7 @@ export function GameControls({ game, faces, rolling, busy, onRoll, onSelectPrope
         </span>
         <div className="flex-1">
           {myTurn
-            ? <div className="animate-pulse text-xs font-bold text-emerald-700">⭐ {t('yourTurn')}</div>
+            ? <div className="animate-pulse text-xs font-bold text-emerald-700"><IconText icon={Star}>{t('yourTurn')}</IconText></div>
             : <div className="text-xs text-stone-500">{t('currentTurn')}</div>}
           <div className="font-bold" style={{ color: player.color }}>{player.name}</div>
         </div>
@@ -62,7 +68,7 @@ export function GameControls({ game, faces, rolling, busy, onRoll, onSelectPrope
 
       <div className="flex flex-col gap-2">
         {phase === 'roll' && player.inJail && canAct({ type: 'PAY_JAIL_FINE' }) && (
-          <p className="rounded-lg bg-stone-100 p-2 text-sm text-stone-700">🔒 {t('jailHint')}</p>
+          <p className="flex items-start gap-2 rounded-lg bg-stone-100 p-2 text-sm text-stone-700"><Lock className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />{t('jailHint')}</p>
         )}
         {phase === 'roll' && <PrimaryTurnButton game={game} rolling={rolling} busy={busy} onRoll={onRoll} />}
         {phase === 'roll' && player.inJail && canAct({ type: 'PAY_JAIL_FINE' }) && (
@@ -76,14 +82,14 @@ export function GameControls({ game, faces, rolling, busy, onRoll, onSelectPrope
             </Button>
             {player.getOutOfJailCards > 0 && (
               <Button variant="secondary" disabled={busy} onClick={() => dispatch({ type: 'USE_JAIL_CARD' })}>
-                🎟️ {t('useJailCard')}
+                <Ticket className="h-4 w-4" aria-hidden /> {t('useJailCard')}
               </Button>
             )}
           </div>
         )}
         {phase === 'end' && <PrimaryTurnButton game={game} rolling={rolling} busy={busy} onRoll={onRoll} />}
         {canProposeTrade(game) && game.debts.length === 0 && canAct({ type: 'PROPOSE_TRADE', offer: { toId: '', offerCash: 0, offerProperties: [], requestCash: 0, requestProperties: [] } }) && (
-          <Button variant="ghost" disabled={busy} onClick={onTrade}>🤝 {t('trade')}</Button>
+          <Button variant="ghost" disabled={busy} onClick={onTrade}><Handshake className="h-4 w-4" aria-hidden /> {t('trade')}</Button>
         )}
         {phase === 'buy' && <p className="text-center text-sm text-stone-500">{t('waitBuy')}…</p>}
         {phase === 'card' && <p className="text-center text-sm text-stone-500">{t('waitCard')}…</p>}

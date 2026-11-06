@@ -1,3 +1,5 @@
+import { CircleAlert, Handshake, TriangleAlert } from 'lucide-react';
+import { IconText } from '../IconText';
 import { useState } from 'react';
 import { maxRaisableCash } from '../../engine/bankruptcy';
 import { canProposeTrade } from '../../engine/game';
@@ -41,14 +43,14 @@ export function DebtModal({ game, onTrade }: { game: GameState; onTrade: () => v
 
   return (
     <Modal
-      title={`⚠️ ${t('debtTitle')}`}
+      title={<IconText icon={TriangleAlert}>{t('debtTitle')}</IconText>}
       accent="#be123c"
       wide
       footer={
         mine ? (
           <>
             <Button variant="danger" disabled={canPay} onClick={() => setConfirming(true)}>{t('declareBankruptcy')}</Button>
-            {canProposeTrade(game) && <Button variant="ghost" onClick={onTrade}>🤝 {t('trade')}</Button>}
+            {canProposeTrade(game) && <Button variant="ghost" onClick={onTrade}><Handshake className="h-4 w-4" aria-hidden /> {t('trade')}</Button>}
             <Button disabled={!canPay} onClick={() => dispatch({ type: 'PAY_DEBT' })}>{t('payDebt')}</Button>
           </>
         ) : (
@@ -69,7 +71,9 @@ export function DebtModal({ game, onTrade }: { game: GameState; onTrade: () => v
           <div className="text-lg font-bold tabular-nums">{formatMoney(raisable)}</div>
         </div>
       </div>
-      <p className="mt-2 text-sm text-stone-600">{raisable < debt.amount ? `❗ ${t('cannotRaise')}` : t('debtHelp')}</p>
+      <p className="mt-2 text-sm text-stone-600">
+        {raisable < debt.amount ? <IconText icon={CircleAlert} className="font-semibold text-rose-700">{t('cannotRaise')}</IconText> : t('debtHelp')}
+      </p>
 
       <ul className="mt-3 max-h-56 space-y-2 overflow-y-auto">
         {debtor.properties.map((id) => {

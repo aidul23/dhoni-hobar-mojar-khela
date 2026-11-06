@@ -1,3 +1,4 @@
+import { Coins } from 'lucide-react';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { formatMoney } from '../../utils/currency';
 
@@ -46,7 +47,7 @@ function FlyingCoin({ flight, onDone }: { flight: Flight; onDone: (id: number) =
       ref={ref}
       className="pointer-events-none fixed left-0 top-0 z-50 rounded-full bg-amber-400 px-3 py-1 text-sm font-bold text-stone-900 shadow-lg ring-2 ring-amber-200"
     >
-      🪙 {formatMoney(flight.amount)}
+      <span className="flex items-center gap-1"><Coins className="h-4 w-4" aria-hidden />{formatMoney(flight.amount)}</span>
     </div>
   );
 }

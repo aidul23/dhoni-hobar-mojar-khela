@@ -1,3 +1,6 @@
+import { Hotel, House, ScrollText } from 'lucide-react';
+import type { ReactNode } from 'react';
+import { IconText } from '../IconText';
 import { useT } from '../../store/gameStore';
 import type { GameState } from '../../types/game';
 import { formatMoney } from '../../utils/currency';
@@ -9,19 +12,23 @@ const MODE_KEY = { classic: 'modeClassic', fast: 'modeFast', custom: 'modeCustom
 export function RulesModal({ game, onClose }: { game: GameState; onClose: () => void }) {
   const t = useT();
   const s = game.settings;
-  const rows: [string, string][] = [
+  const rows: [string, ReactNode][] = [
     [t('gameMode'), t(MODE_KEY[s.mode])],
     [t('startingCash'), formatMoney(s.startingCash)],
     [t('startBonus'), formatMoney(s.startBonus)],
     [t('jailFine'), formatMoney(s.jailFine)],
     [t('priceLevel'), `${Math.round(s.priceMultiplier * 100)}%`],
     [t('ownership'), s.victoryPercent ? t('percentOfProps', { n: s.victoryPercent }) : t('off')],
-    [t('buildingSupply'), `🏠 ${s.houseLimit ?? t('unlimited')} · 🏨 ${s.hotelLimit ?? t('unlimited')}`],
+    [t('buildingSupply'), (
+      <span className="inline-flex items-center gap-2">
+        <IconText icon={House}>{s.houseLimit ?? t('unlimited')}</IconText>·<IconText icon={Hotel}>{s.hotelLimit ?? t('unlimited')}</IconText>
+      </span>
+    )],
     [t('turnLimit').replace(/\s*\(.*\)/, ''), s.turnLimit ? t('roundsThenRichest', { n: s.turnLimit }) : t('off')],
   ];
   return (
     <Modal
-      title={`📜 ${t('rulesTitle')}`}
+      title={<IconText icon={ScrollText}>{t('rulesTitle')}</IconText>}
       onClose={onClose}
       footer={<Button variant="ghost" onClick={onClose}>{t('close')}</Button>}
     >

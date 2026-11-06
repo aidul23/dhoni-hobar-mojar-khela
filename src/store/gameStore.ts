@@ -7,18 +7,6 @@ import { t } from '../utils/translations';
 const SAVE_KEY = 'dhmk-save';
 const LANG_KEY = 'dhmk-lang';
 const MUTE_KEY = 'dhmk-muted';
-const LOOK_KEY = 'dhmk-look';
-
-/** Visual style of the home page: Bangladeshi rickshaw art (default) or the original classic design. */
-export type Look = 'rickshaw' | 'classic';
-
-function readLook(): Look {
-  try {
-    return localStorage.getItem(LOOK_KEY) === 'classic' ? 'classic' : 'rickshaw';
-  } catch {
-    return 'rickshaw';
-  }
-}
 
 function readSave(): GameState | null {
   try {
@@ -62,8 +50,6 @@ interface GameStore {
   sessionId: number;
   muted: boolean;
   toggleMute: () => void;
-  look: Look;
-  setLook: (look: Look) => void;
   setLang: (lang: Lang) => void;
   startGame: (players: PlayerSetup[], settings: GameSettings) => void;
   dispatch: (action: GameAction) => void;
@@ -83,12 +69,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   game: null,
   sessionId: 0,
   muted: readMuted(),
-  look: readLook(),
-
-  setLook: (look) => {
-    try { localStorage.setItem(LOOK_KEY, look); } catch { /* ignore */ }
-    set({ look });
-  },
   onlineDispatch: null,
 
   toggleMute: () => {

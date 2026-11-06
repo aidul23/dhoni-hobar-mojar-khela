@@ -1,10 +1,13 @@
+import { Hotel } from 'lucide-react';
+import type { ReactNode } from 'react';
+import { IconText } from '../IconText';
 import { GROUP_COLORS } from '../../data/properties';
 import { getMortgageValue, getPrice, getPropertyDef } from '../../engine/property';
 import { useT } from '../../store/gameStore';
 import type { GameState } from '../../types/game';
 import { formatMoney } from '../../utils/currency';
 
-function Row({ label, value }: { label: string; value: string | number }) {
+function Row({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="flex justify-between gap-4 py-0.5">
       <span className="text-stone-500">{label}</span>
@@ -60,7 +63,7 @@ export function PropertyDetails({ id, game, compact = false }: { id: string; gam
           <Row label={t('mortgageValue')} value={formatMoney(getMortgageValue(game.settings, id))} />
           <Row label={t('owner')} value={owner ? `${owner.token} ${owner.name}` : t('bank')} />
           {def.kind === 'street' && (
-            <Row label={t('houses')} value={ps.hotel ? `🏨 ${t('hotel')}` : ps.houses} />
+            <Row label={t('houses')} value={ps.hotel ? <IconText icon={Hotel} className="text-rose-700">{t('hotel')}</IconText> : ps.houses} />
           )}
           <Row label={t('status')} value={ps.mortgaged ? t('mortgaged') : t('notMortgaged')} />
         </div>

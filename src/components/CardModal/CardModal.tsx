@@ -1,3 +1,4 @@
+import { CircleHelp, Gift } from 'lucide-react';
 import { getCard } from '../../engine/cards';
 import { useGameStore, useT } from '../../store/gameStore';
 import { useCanAct } from '../../store/onlineStore';
@@ -19,7 +20,11 @@ export function CardModal({ cardId, drawnBy }: { cardId: string; drawnBy: Player
         className={`animate-flip w-full max-w-xs rounded-2xl border-4 p-6 text-center shadow-2xl
           ${isChance ? 'border-orange-400 bg-orange-50' : 'border-sky-400 bg-sky-50'}`}
       >
-        <div className="text-5xl">{isChance ? '❓' : '🎁'}</div>
+        <div className="flex justify-center">
+          {isChance
+            ? <CircleHelp className="h-14 w-14 text-orange-600" strokeWidth={2} aria-hidden />
+            : <Gift className="h-14 w-14 text-sky-600" strokeWidth={2} aria-hidden />}
+        </div>
         <h2 className={`mt-2 text-2xl font-bold ${isChance ? 'text-orange-700' : 'text-sky-700'}`}>
           {t(card.deck)}
         </h2>

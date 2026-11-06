@@ -74,7 +74,7 @@ body {
   }
 }
 
-/* ---------- Rickshaw-art look (home page) ---------- */
+/* ---------- Rickshaw-art style ---------- */
 
 /* Faint repeating tile of small flowers and dots, light enough to keep forms readable. */
 .rickshaw-bg {
@@ -93,6 +93,12 @@ body {
   line-height: 1.25;
 }
 
+/* Thinner outline and shadow for the smaller title in the board centre. */
+.rickshaw-title-small {
+  -webkit-text-stroke-width: 1.5px;
+  text-shadow: 2px 2px 0 #be123c, 3px 3px 0 rgba(0, 0, 0, 0.3);
+}
+
 /* Multicolour striped frame, like the borders on rickshaw backboards. */
 .rickshaw-frame {
   background: repeating-linear-gradient(
@@ -102,4 +108,26 @@ body {
     #16a34a 28px 42px,
     #2563eb 42px 56px
   );
+}
+
+/* টাকা উড়ানো: notes and coins rising up the rickshaw-art home page. */
+.taka-rise {
+  animation: taka-rise linear infinite;
+  will-change: transform;
+}
+.taka-flutter {
+  animation: taka-flutter ease-in-out infinite alternate;
+  transform-style: preserve-3d;
+}
+@keyframes taka-rise {
+  from { transform: translateY(0); }
+  to { transform: translateY(calc(-100vh - 140px)); }
+}
+@keyframes taka-flutter {
+  0% { transform: translateX(-24px) rotate(-22deg) rotateY(0deg); }
+  50% { transform: translateX(6px) rotate(8deg) rotateY(80deg); }
+  100% { transform: translateX(24px) rotate(24deg) rotateY(170deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .taka-layer { display: none; }
 }

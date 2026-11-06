@@ -10,19 +10,3 @@ export const PLAYER_COLORS = [
   '#db2777', // pink
   '#4b5563', // slate
 ];
-
-export const SPACE_ICONS: Record<string, string> = {
-  start: '🏁',
-  jail: '🔒',
-  rest: '🌳',
-  goToJail: '👮',
-  chance: '❓',
-  fortune: '🎁',
-  tax: '💸',
-  rail: '🚆',
-  launch: '🚢',
-  bus: '🚌',
-  airport: '✈️',
-  power: '⚡',
-  water: '💧',
-};

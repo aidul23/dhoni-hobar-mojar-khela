@@ -17,7 +17,7 @@ export function Button({
   return (
     <button
       type="button"
-      className={`flex-1 rounded-lg px-4 py-2 font-semibold shadow-sm transition active:scale-95 disabled:cursor-not-allowed disabled:active:scale-100 ${VARIANTS[variant]} ${className}`}
+      className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2 font-semibold shadow-sm transition active:scale-95 disabled:cursor-not-allowed disabled:active:scale-100 ${VARIANTS[variant]} ${className}`}
       {...props}
     />
   );

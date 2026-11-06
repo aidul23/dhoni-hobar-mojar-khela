@@ -23,7 +23,7 @@ export const DEFAULT_RULES: Required<RoomRules> = {
   },
 };
 
-export function Section({ title, children }: { title: string; children: ReactNode }) {
+export function Section({ title, children }: { title: ReactNode; children: ReactNode }) {
   return (
     <section className="rounded-xl bg-white p-4 shadow-sm">
       <h2 className="mb-3 font-bold text-emerald-800">{title}</h2>

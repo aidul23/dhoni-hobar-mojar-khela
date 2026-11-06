@@ -1,3 +1,5 @@
+import { Handshake } from 'lucide-react';
+import { IconText } from '../IconText';
 import { useState } from 'react';
 import { getPropertyDef } from '../../engine/property';
 import { actingPlayer } from '../../engine/state';
@@ -84,7 +86,7 @@ export function TradeModal({ game, onClose }: { game: GameState; onClose: () => 
 
   return (
     <Modal
-      title={`🤝 ${t('tradeTitle')}`}
+      title={<IconText icon={Handshake}>{t('tradeTitle')}</IconText>}
       onClose={onClose}
       wide
       footer={

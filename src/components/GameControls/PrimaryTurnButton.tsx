@@ -1,3 +1,4 @@
+import { ArrowRight, Dices } from 'lucide-react';
 import { useGameStore, useT } from '../../store/gameStore';
 import type { GameState } from '../../types/game';
 import { useCanAct } from '../../store/onlineStore';
@@ -24,14 +25,15 @@ export function PrimaryTurnButton({ game, rolling, busy, onRoll, className = '' 
   if (game.phase === 'roll') {
     return (
       <Button onClick={onRoll} disabled={busy} className={className}>
-        {rolling ? t('rolling') : game.doublesCount > 0 ? t('rollAgain') : t('rollDice')} 🎲
+        <Dices className="h-5 w-5" aria-hidden />
+        {rolling ? t('rolling') : game.doublesCount > 0 ? t('rollAgain') : t('rollDice')}
       </Button>
     );
   }
   if (game.phase === 'end') {
     return (
       <Button variant="secondary" disabled={busy} onClick={() => dispatch({ type: 'END_TURN' })} className={className}>
-        {t('endTurn')} ➜
+        {t('endTurn')} <ArrowRight className="h-5 w-5" aria-hidden />
       </Button>
     );
   }

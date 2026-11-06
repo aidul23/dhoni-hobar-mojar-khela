@@ -1,35 +1,15 @@
+import { Dices, Globe, Play, Smartphone } from 'lucide-react';
+import { IconText } from '../components/IconText';
 import { useState } from 'react';
 import { Button } from '../components/Modal/Button';
 import { Choice, DEFAULT_RULES, PlayerFields, RulesEditor, Section } from '../components/Setup/SetupParts';
 import { PLAYER_COLORS, TOKENS } from '../data/tokens';
 import { buildSettings, MAX_PLAYERS, MIN_PLAYERS } from '../engine/setup';
+import { FlyingTaka } from '../components/Home/FlyingTaka';
 import { RickshawSignboard } from '../components/Home/RickshawSignboard';
-import { useGameStore, useT, type Look } from '../store/gameStore';
+import { useGameStore, useT } from '../store/gameStore';
 import { useOnlineStore } from '../store/onlineStore';
 import type { PlayerSetup } from '../types/game';
-
-/** Switch between the rickshaw-art and classic home page; remembered in this browser. */
-function LookToggle() {
-  const t = useT();
-  const look = useGameStore((s) => s.look);
-  const setLook = useGameStore((s) => s.setLook);
-  const option = (value: Look, label: string) => (
-    <button
-      type="button"
-      onClick={() => setLook(value)}
-      aria-pressed={look === value}
-      className={`rounded-full px-3 py-1 text-sm font-semibold transition ${look === value ? 'bg-[#be123c] text-white shadow' : 'text-stone-600 hover:bg-white/70'}`}
-    >
-      {label}
-    </button>
-  );
-  return (
-    <div className="inline-flex gap-1 rounded-full bg-white/80 p-1 ring-1 ring-stone-300">
-      {option('rickshaw', `🎨 ${t('lookRickshaw')}`)}
-      {option('classic', t('lookClassic'))}
-    </div>
-  );
-}
 
 export function Home() {
   const t = useT();
@@ -37,7 +17,6 @@ export function Home() {
   const continueGame = useGameStore((s) => s.continueGame);
   const openOnline = useOnlineStore((s) => s.open);
   const hasSave = useGameStore((s) => s.hasSavedGame)();
-  const look = useGameStore((s) => s.look);
 
   const [count, setCount] = useState(2);
   const [players, setPlayers] = useState<PlayerSetup[]>(() =>
@@ -63,18 +42,10 @@ export function Home() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-4 p-4 pb-12">
-      {look === 'rickshaw' && <div className="rickshaw-bg fixed inset-0 -z-10" aria-hidden />}
+      <div className="rickshaw-bg fixed inset-0 -z-10" aria-hidden />
+      <FlyingTaka />
       <header className="py-6 text-center">
-        <LookToggle />
-        {look === 'rickshaw' ? (
-          <div className="mt-4"><RickshawSignboard /></div>
-        ) : (
-          <>
-            <div className="text-5xl">🏘️💰🎲</div>
-            <h1 className="mt-3 text-4xl font-bold text-emerald-800 sm:text-5xl">{t('title')}</h1>
-            <p className="mt-2 text-stone-600">{t('subtitle')}</p>
-          </>
-        )}
+        <RickshawSignboard />
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           {hasSave && (
             <button
@@ -82,7 +53,7 @@ export function Home() {
               onClick={continueGame}
               className="rounded-xl bg-amber-400 px-6 py-3 text-lg font-bold shadow hover:bg-amber-500"
             >
-              ▶ {t('continueGame')}
+              <IconText icon={Play} iconClassName="h-5 w-5 fill-current">{t('continueGame')}</IconText>
             </button>
           )}
           <button
@@ -90,12 +61,12 @@ export function Home() {
             onClick={() => openOnline()}
             className="rounded-xl bg-blue-700 px-6 py-3 text-lg font-bold text-white shadow hover:bg-blue-800"
           >
-            🌐 {t('playOnline')}
+            <IconText icon={Globe}>{t('playOnline')}</IconText>
           </button>
         </div>
       </header>
 
-      <h2 className="text-center text-lg font-bold text-stone-700">📱 {t('playOnDevice')}</h2>
+      <h2 className="flex items-center justify-center gap-2 text-lg font-bold text-stone-700"><Smartphone className="h-5 w-5" aria-hidden />{t('playOnDevice')}</h2>
 
       <Section title={t('numPlayers')}>
         <div className="flex gap-2">
@@ -117,7 +88,7 @@ export function Home() {
 
       {!valid && <p className="text-center font-semibold text-rose-600">{t('duplicateColors')}</p>}
       <Button onClick={start} disabled={!valid} className="w-full py-3 text-xl">
-        {t('startGame')} 🎲
+        <Dices className="h-6 w-6" aria-hidden /> {t('startGame')}
       </Button>
     </div>
   );
