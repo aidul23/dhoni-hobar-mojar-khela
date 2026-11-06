@@ -1,6 +1,7 @@
 import { Volume2, VolumeX } from 'lucide-react';
 import { useEffect } from 'react';
 import { Game } from './pages/Game';
+import { ONLINE_ENABLED } from './config';
 import { Home } from './pages/Home';
 import { OnlineLobby } from './pages/OnlineLobby';
 import { resumeOnlineSession, useOnlineStore } from './store/onlineStore';
@@ -22,7 +23,9 @@ export default function App() {
   const online = useOnlineStore((s) => s.active);
 
   // Rejoin an online room after a refresh, or open the join form from an invite link.
-  useEffect(resumeOnlineSession, []);
+  useEffect(() => {
+    if (ONLINE_ENABLED) resumeOnlineSession();
+  }, []);
 
   useEffect(() => {
     document.documentElement.lang = lang;

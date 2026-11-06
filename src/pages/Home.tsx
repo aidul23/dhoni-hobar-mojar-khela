@@ -1,5 +1,6 @@
 import { formatNumber } from '../utils/currency';
-import { Dices, Globe, Play, Smartphone } from 'lucide-react';
+import { Clock, Dices, Globe, Play, Smartphone } from 'lucide-react';
+import { ONLINE_ENABLED } from '../config';
 import { IconText } from '../components/IconText';
 import { useState } from 'react';
 import { Button } from '../components/Modal/Button';
@@ -28,6 +29,14 @@ export function Home() {
     })),
   );
   const [rules, setRules] = useState(DEFAULT_RULES);
+  const [showComingSoon, setShowComingSoon] = useState(false);
+
+  // Online play needs the game server; until it is deployed the button explains that.
+  const handleOnline = () => {
+    if (ONLINE_ENABLED) return openOnline();
+    setShowComingSoon(true);
+    window.setTimeout(() => setShowComingSoon(false), 3500);
+  };
 
   const active = players.slice(0, count);
   const unique = (key: 'color' | 'token') => new Set(active.map((p) => p[key])).size === active.length;
@@ -59,12 +68,26 @@ export function Home() {
           )}
           <button
             type="button"
-            onClick={() => openOnline()}
-            className="rounded-xl bg-blue-700 px-6 py-3 text-lg font-bold text-white shadow hover:bg-blue-800"
+            onClick={handleOnline}
+            aria-describedby={ONLINE_ENABLED ? undefined : 'online-soon'}
+            className={`relative rounded-xl px-6 py-3 text-lg font-bold shadow ${ONLINE_ENABLED
+              ? 'bg-blue-700 text-white hover:bg-blue-800'
+              : 'bg-blue-700/60 text-white/90 hover:bg-blue-700/70'}`}
           >
             <IconText icon={Globe}>{t('playOnline')}</IconText>
+            {!ONLINE_ENABLED && (
+              <span className="absolute -right-2 -top-3 rotate-6 rounded-full border-2 border-white bg-[#be123c] px-2 py-0.5 text-xs font-bold text-white shadow">
+                {t('comingSoon')}
+              </span>
+            )}
           </button>
         </div>
+        {showComingSoon && (
+          <p id="online-soon" role="status" className="animate-pop mx-auto mt-4 flex w-fit max-w-full items-center gap-2 rounded-xl border-2 border-[#7c2d12] bg-[#facc15] px-4 py-2 font-semibold text-[#7c2d12] shadow-[3px_3px_0_#7c2d12]">
+            <Clock className="h-5 w-5 shrink-0" aria-hidden />
+            {t('onlineComingSoon')}
+          </p>
+        )}
       </header>
 
       <h2 className="flex items-center justify-center gap-2 text-lg font-bold text-stone-700"><Smartphone className="h-5 w-5" aria-hidden />{t('playOnDevice')}</h2>

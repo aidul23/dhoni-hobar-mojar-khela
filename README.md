@@ -9,6 +9,40 @@ npm test         # engine unit tests (Vitest)
 npm run build    # typecheck + production build
 ```
 
+## Hosting the offline version (static files)
+
+The single-device game is plain HTML/JS/CSS after a build, so any web server can host it:
+no Node process, no database.
+
+```bash
+npm ci
+npm run build        # creates dist/
+```
+
+Copy the contents of `dist/` to your web server's folder. Unknown paths should fall back to
+`index.html`. Example nginx site:
+
+```nginx
+server {
+    listen 80;
+    server_name game.example.com;
+    root /var/www/dhoni-hobar/dist;
+    index index.html;
+
+    location /assets/ {            # file names contain a hash, safe to cache forever
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+    location / {
+        try_files $uri /index.html;
+    }
+}
+```
+
+Online play is switched off in these builds: the button shows "শীঘ্রই আসছে" (coming soon).
+To switch it on later, deploy the game server (see below) and build with
+`VITE_ONLINE_ENABLED=true npm run build`.
+
 ## Online play
 
 Friends can play from their own devices. The host creates a room and shares a link or 6-letter code;
