@@ -1,7 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Hind Siliguri", "Noto Sans Bengali", "Kohinoor Bangla", system-ui, sans-serif;
+  /* "Noto Sans Bengali" is listed first but loaded only for the digits ০-৯ (see index.html);
+     every other character falls through to Hind Siliguri. */
+  --font-sans: "Noto Sans Bengali", "Hind Siliguri", "Kohinoor Bangla", system-ui, sans-serif;
 
   --animate-pop: pop 0.25s ease-out;
   --animate-hop: hop 0.18s ease-out;
