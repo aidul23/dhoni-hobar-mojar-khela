@@ -1,6 +1,6 @@
 import { Lock, MapPin, Ticket, TriangleAlert, WifiOff } from 'lucide-react';
 import { IconText } from '../IconText';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { BOARD } from '../../data/board';
 import { useGameStore, useT } from '../../store/gameStore';
 import type { Player } from '../../types/game';
@@ -36,7 +36,7 @@ function useJustBankrupt(bankrupt: boolean) {
   return shaking;
 }
 
-export function PlayerCard({ player, isCurrent, debt = 0, worth, isMe = false, offline = false, onRemove }: {
+export function PlayerCard({ player, isCurrent, debt = 0, worth, isMe = false, offline = false, onRemove, spotlit = false, onSpotlight }: {
   player: Player;
   isCurrent: boolean;
   debt?: number;
@@ -47,6 +47,9 @@ export function PlayerCard({ player, isCurrent, debt = 0, worth, isMe = false, o
   offline?: boolean;
   /** Online, host only: shown once the player has been offline for a while. */
   onRemove?: () => void;
+  /** Hovering or tapping the card spotlights this player's properties on the board. */
+  spotlit?: boolean;
+  onSpotlight?: (on: boolean) => void;
 }) {
   const t = useT();
   const lang = useGameStore((s) => s.lang);
@@ -57,11 +60,22 @@ export function PlayerCard({ player, isCurrent, debt = 0, worth, isMe = false, o
   return (
     <div
       data-player-card={player.id}
+      onMouseEnter={onSpotlight && (() => onSpotlight(true))}
+      onMouseLeave={onSpotlight && (() => onSpotlight(false))}
+      onClick={onSpotlight && ((e) => {
+        if ((e.target as HTMLElement).closest('button')) return;
+        onSpotlight(!spotlit);
+      })}
       className={`relative rounded-xl border-2 bg-white p-3 shadow-sm transition duration-700
+        ${onSpotlight && player.properties.length > 0 ? 'cursor-pointer' : ''}
+        ${spotlit ? 'ring-4 ring-offset-1' : ''}
         ${isCurrent ? 'scale-[1.02] shadow-lg' : 'border-transparent'}
         ${shaking ? 'animate-shake border-rose-500' : ''}
         ${player.bankrupt && !shaking ? 'opacity-50 grayscale' : ''}`}
-      style={isCurrent ? { borderColor: player.color } : undefined}
+      style={{
+        ...(isCurrent ? { borderColor: player.color } : {}),
+        ...(spotlit ? { '--tw-ring-color': player.color } as CSSProperties : {}),
+      }}
     >
       <div className="flex items-center gap-2">
         <span

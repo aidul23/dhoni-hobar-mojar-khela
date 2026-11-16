@@ -33,7 +33,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen">
-      <div className="flex justify-end gap-1 px-3 pt-3">
+      {/* In a game on wide screens the bar floats above the player list so the board gets the full height. */}
+      <div className={`flex justify-end gap-1 px-3 pt-3 ${game ? 'lg:absolute lg:left-3 lg:top-3 lg:z-20 lg:justify-start lg:p-0' : ''}`}>
         <button
           type="button"
           onClick={toggleMute}

@@ -9,17 +9,19 @@ interface Props {
   positions: Record<string, number>;
   faces: [number, number];
   rolling: boolean;
+  /** Player whose properties are spotlighted, or null. */
+  spotlight: string | null;
   onSelectProperty: (id: string) => void;
 }
 
 const TRACK = '1.55fr repeat(9, 1fr) 1.55fr';
 
-export function Board({ game, lang, positions, faces, rolling, onSelectProperty }: Props) {
+export function Board({ game, lang, positions, faces, rolling, spotlight, onSelectProperty }: Props) {
   const active = game.players.filter((p) => !p.bankrupt);
   const current = game.players[game.currentPlayerIndex];
 
   return (
-    <div className="@container mx-auto aspect-square w-full max-w-[min(100%,calc(100vh-5.5rem))]">
+    <div className="@container mx-auto aspect-square w-full max-w-[min(100%,calc(100vh-1.5rem))]">
       {/* The striped rickshaw-backboard frame wraps the board. */}
       <div className="rickshaw-frame h-full w-full rounded-[2.2cqw] p-[1cqw] shadow-[0_0.8cqw_0_#7f1d1d,0_2cqw_3cqw_rgba(0,0,0,0.25)]">
       <div
@@ -34,6 +36,7 @@ export function Board({ game, lang, positions, faces, rolling, onSelectProperty 
             lang={lang}
             tokens={active.filter((p) => positions[p.id] === space.index)}
             highlighted={positions[current.id] === space.index}
+            spotlight={spotlight}
             onSelectProperty={onSelectProperty}
           />
         ))}

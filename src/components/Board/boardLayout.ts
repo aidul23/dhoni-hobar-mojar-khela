@@ -22,11 +22,32 @@ export const STRIP_POSITION: Record<Side, string> = {
   corner: 'hidden',
 };
 
-/** Owner marker sits on the outer edge, opposite the colour strip. */
+/**
+ * Owner sticker (the owner's token) sits at the start of the colour strip; buildings sit at its end.
+ * Corners and other unownable spaces never show it.
+ */
 export const OWNER_POSITION: Record<Side, string> = {
-  bottom: 'bottom-0 left-0 right-0 h-[12%]',
-  top: 'top-0 left-0 right-0 h-[12%]',
-  left: 'top-0 bottom-0 left-0 w-[9%]',
-  right: 'top-0 bottom-0 right-0 w-[9%]',
+  bottom: 'top-[2%] left-[4%]',
+  top: 'bottom-[2%] left-[4%]',
+  left: 'top-[4%] right-[1%]',
+  right: 'top-[4%] left-[1%]',
   corner: 'hidden',
+};
+
+/** Pushes the building badge to the far end of the strip, away from the owner sticker. */
+export const STRIP_ALIGN: Record<Side, string> = {
+  bottom: 'justify-end pr-[4%]',
+  top: 'justify-end pr-[4%]',
+  left: 'flex-col justify-end pb-[4%]',
+  right: 'flex-col justify-end pb-[4%]',
+  corner: '',
+};
+
+/** Nudges a space's label away from its colour strip so the text keeps the full free area. */
+export const CONTENT_OFFSET: Record<Side, string> = {
+  bottom: 'mt-[18%]',
+  top: 'mb-[18%]',
+  left: 'mr-[12%]',
+  right: 'ml-[12%]',
+  corner: 'mb-[18%]',
 };

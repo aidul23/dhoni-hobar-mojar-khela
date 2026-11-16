@@ -28,7 +28,7 @@ import { useLogEvents } from '../hooks/useLogEvents';
 import { useGameStore, useT } from '../store/gameStore';
 import { useOnlineStore, useOnlineView } from '../store/onlineStore';
 import type { GameState, LogEntry } from '../types/game';
-import { playSound, soundForLogKeys } from '../utils/sound';
+import { playSound, soundForEvents } from '../utils/sound';
 
 /** The one modal that must be answered before play continues. */
 function BlockingModal({ game, trading, setTrading }: {
@@ -92,13 +92,13 @@ function useMyTurnAlert(game: GameState, myId: string | null, muted: boolean) {
 }
 
 /** Sounds and coin animations for newly logged events. */
-function useGameEffects(game: GameState, busy: boolean) {
+function useGameEffects(game: GameState, busy: boolean, myId: string | null) {
   const muted = useGameStore((s) => s.muted);
   const [flights, setFlights] = useState<Flight[]>([]);
   const nextFlightId = useRef(1);
 
   useLogEvents(game.log, busy, (entries: LogEntry[]) => {
-    const sound = soundForLogKeys(entries.map((e) => e.key));
+    const sound = soundForEvents(entries, myId);
     if (sound) playSound(sound, muted);
 
     const newFlights = entries
@@ -128,6 +128,7 @@ export function Game({ game }: { game: GameState }) {
   const [panel, setPanel] = useState<Panel>(null);
   const [savedFlash, setSavedFlash] = useState(false);
   const [trading, setTrading] = useState(false);
+  const [spotlight, setSpotlight] = useState<string | null>(null);
 
   const muted = useGameStore((s) => s.muted);
   const view = useOnlineView();
@@ -148,7 +149,7 @@ export function Game({ game }: { game: GameState }) {
   const removable = useRemovablePlayers(view, game.players);
   useMyTurnAlert(game, view.myId, muted);
   const shownFaces = rolling ? faces : (game.dice ?? [1, 1]);
-  const { flights, removeFlight } = useGameEffects(game, animating);
+  const { flights, removeFlight } = useGameEffects(game, animating, view.myId);
 
   // Online the server replaces these dice with its own roll.
   const handleRoll = () => {
@@ -162,9 +163,9 @@ export function Game({ game }: { game: GameState }) {
   };
 
   return (
-    <div className="mx-auto flex max-w-[1600px] flex-col gap-3 p-3 pb-20 lg:grid lg:grid-cols-[230px_minmax(0,1fr)_320px] lg:pb-3">
+    <div className="mx-auto flex max-w-[1800px] flex-col gap-3 p-3 pb-20 lg:grid lg:grid-cols-[210px_minmax(0,1fr)_300px] lg:pb-3">
       {/* Left: players */}
-      <aside className="grid grid-cols-2 gap-2 lg:flex lg:flex-col">
+      <aside className="grid grid-cols-2 gap-2 lg:flex lg:flex-col lg:pt-10">
         {game.players.map((p, i) => (
           <PlayerCard
             key={p.id}
@@ -175,6 +176,8 @@ export function Game({ game }: { game: GameState }) {
             isMe={view.online && p.id === view.myId}
             offline={view.online && view.seatOf(p.id)?.connected === false && !p.bankrupt}
             onRemove={view.isHost && removable.has(p.id) ? () => setRemoving(p.id) : undefined}
+            spotlit={spotlight === p.id}
+            onSpotlight={(on) => setSpotlight(on && p.properties.length > 0 ? p.id : null)}
           />
         ))}
       </aside>
@@ -187,12 +190,13 @@ export function Game({ game }: { game: GameState }) {
           positions={positions}
           faces={shownFaces}
           rolling={rolling}
+          spotlight={spotlight}
           onSelectProperty={setSelected}
         />
       </main>
 
       {/* Right: controls + log */}
-      <aside className="flex flex-col gap-3 lg:max-h-[calc(100vh-5rem)]">
+      <aside className="flex flex-col gap-3 lg:max-h-[calc(100vh-1.5rem)]">
         <GameControls
           game={game}
           faces={shownFaces}
