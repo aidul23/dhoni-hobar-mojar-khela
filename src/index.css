@@ -133,3 +133,25 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .taka-layer { display: none; }
 }
+
+/* Home page demo board: tilted toward the viewer and gently floating. */
+.demo-tilt {
+  transform: rotateX(14deg) rotateZ(-4deg);
+  animation: demo-float 6s ease-in-out infinite;
+}
+@keyframes demo-float {
+  0%, 100% { transform: rotateX(14deg) rotateZ(-4deg) translateY(0); }
+  50% { transform: rotateX(14deg) rotateZ(-4deg) translateY(-10px); }
+}
+
+/* Big "start" button that gently bounces to invite a click. */
+.start-bounce {
+  animation: start-bounce 2.4s ease-in-out infinite;
+}
+.start-bounce:hover { animation-play-state: paused; }
+@keyframes start-bounce {
+  0%, 100%, 60% { transform: translateY(0); }
+  70% { transform: translateY(-6px); }
+  80% { transform: translateY(0); }
+  88% { transform: translateY(-3px); }
+}
